@@ -66,25 +66,24 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: 🏷️✍️ Create new UAT release tag
+    # - name: 🏷️🧪 Get latest UAT release
+    #   id: get_latest_uat_release
+    #   uses: "WyriHaximus/github-action-get-previous-tag@v1"
+    #   with:
+    #     fallback: 2.0.0
+    - name: 🏷️✍️ Create new release tag
       uses: rickstaa/action-create-tag@v1
       id: "tag_create"
       with:
-        tag: "latest"
+        tag: "v1.0.2"
         tag_exists_error: false
         message: "Latest release"
         github_token: ${{ secrets.GITHUB_TOKEN  }}
 
-      # Print result using the env variable.
-    - run: |
-        echo "Tag already present: ${{ env.TAG_EXISTS }}"
-
-      # Print result using the action output.
-    - run: |
-        echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
+    
 
     - name: Create a Release APK
       uses: ncipollo/release-action@v1
       with:
         artifacts: "target/*.jar"
-        tag: ${{steps.tag_create.outputs.tag_exists}}
+        tag: "v1.0.2"
